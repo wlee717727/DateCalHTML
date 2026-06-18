@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="百日對年計算器">
+    <meta name="theme-color" content="#0078D7">
+    <title>百日對年計算器</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Microsoft JhengHei', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 10px;
+            -webkit-user-select: none;
+            -webkit-touch-callout: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #0078D7, #5C2D91);
+            color: white;
+            padding: 30px;
+            text-align: center;
+            position: relative;
+        }
+        
+        .logo-container {
+            margin-bottom: 20px;
+        }
+        
+        .company-logo {
+            max-width: 120px;
+            max-height: 80px;
+            width: auto;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            background: white;
+            padding: 8px;
+        }
+        
+        .header h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            font-size: 16px;
+            opacity: 0.9;
+        }
+        
+        .content {
+            padding: 30px;
+        }
+        
+        .input-section {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+        }
+        
+        .input-group {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .input-group label {
+            font-weight: bold;
+            color: #333;
+            min-width: 60px;
+        }
+        
+        .input-group input {
+            padding: 12px 15px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            width: 100px;
+            transition: border-color 0.3s;
+            -webkit-appearance: none;
+            -moz-appearance: textfield;
+        }
+        
+        .input-group input::-webkit-outer-spin-button,
+        .input-group input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        
+        .input-group input:focus {
+            outline: none;
+            border-color: #0078D7;
+        }
+        
+        .button-group {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .btn-primary {
+            background: #0078D7;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: #005A9E;
+            transform: translateY(-2px);
+        }
+        
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+        
+        .btn-secondary:hover {
+            background: #545b62;
+            transform: translateY(-2px);
+        }
+        
+        .results {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        
+        .result-card {
+            background: white;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            overflow: hidden;
+            transition: transform 0.3s;
+        }
+        
+        .result-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+        
+        .result-header {
+            background: linear-gradient(135deg, #0078D7, #5C2D91);
+            color: white;
+            padding: 15px 20px;
+            font-weight: bold;
+            font-size: 18px;
+        }
+        
+        .result-content {
+            padding: 20px;
+            font-size: 14px;
+            line-height: 1.6;
+            white-space: pre-line;
+            min-height: 200px;
+        }
+        
+        .info-text {
+            text-align: center;
+            color: #666;
+            font-style: italic;
+            margin-top: 20px;
+        }
+        
+        @media (max-width: 768px) {
+            body {
+                padding: 5px;
+            }
+            
+            .container {
+                border-radius: 10px;
+            }
+            
+            .header {
+                padding: 20px;
+            }
+            
+            .company-logo {
+                max-width: 100px;
+                max-height: 60px;
+            }
+            
+            .header h1 {
+                font-size: 24px;
+            }
+            
+            .content {
+                padding: 20px;
+            }
+            
+            .input-section {
+                padding: 20px;
+            }
+            
+            .input-group {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+            
+            .input-group input {
+                width: 100%;
+                max-width: 200px;
+                font-size: 18px;
+                padding: 15px;
+            }
+            
+            .button-group {
+                justify-content: center;
+            }
+            
+            .btn {
+                padding: 15px 25px;
+                font-size: 18px;
+            }
+            
+            .results {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+            
+            .result-header {
+                font-size: 16px;
+                padding: 12px 15px;
+            }
+            
+            .result-content {
+                padding: 15px;
+                font-size: 13px;
+            }
+        }
+        
+        /* iOS Safari 優化 */
+        @media screen and (-webkit-min-device-pixel-ratio: 2) {
+            .input-group input {
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo-container">
+                <img src="./ZYLOGOcircle.png" alt="尊圓禮儀公司 Logo" class="company-logo" onerror="this.style.display='none'">
+            </div>
+            <h1>📅 百日對年計算器</h1>
+            <p>Zun Yuan Funeral Service</p>
+        </div>
+        
+        <div class="content">
+            <div class="input-section">
+                <div class="input-group">
+                    <label>年份:</label>
+                    <input type="number" id="year" placeholder="2024" min="1901" max="2099">
+                    <label>月份:</label>
+                    <input type="number" id="month" placeholder="1" min="1" max="12">
+                    <label>日期:</label>
+                    <input type="number" id="day" placeholder="1" min="1" max="31">
+                </div>
+                
+                <div class="button-group">
+                    <button class="btn btn-primary" onclick="calculate()">🔍 計算</button>
+                    <button class="btn btn-secondary" onclick="setToday()">📅 今天</button>
+                </div>
+            </div>
+            
+            <div class="results">
+                <div class="result-card">
+                    <div class="result-header">🌙 陰陽換算</div>
+                    <div class="result-content" id="lunar-conversion">請輸入日期後點擊計算按鈕</div>
+                </div>
+                
+                <div class="result-card">
+                    <div class="result-header">⏰ 百日計算</div>
+                    <div class="result-content" id="hundred-days">請輸入日期後點擊計算按鈕</div>
+                </div>
+                
+                <div class="result-card">
+                    <div class="result-header">🕯️ 對年說明</div>
+                    <div class="result-content" id="anniversary">請輸入日期後點擊計算按鈕</div>
+                </div>
+                
+                <div class="result-card">
+                    <div class="result-header">🌙 七七日期</div>
+                    <div class="result-content" id="seven-ceremonies">請輸入日期後點擊計算按鈕</div>
+                </div>
+            </div>
+            
+            <div class="info-text">
+                💡 輸入西元日期以換算農曆、計算百日、對年紀念日 💡<br>
+                <div style="text-align:center; margin-top: 10px;">
+                    ©2025 Zun Yuan Funeral Service ALL RIGHT RESERVED
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 農曆資料 (1901-2099年完整資料)
+        const lunarData = [
+            0xF0EA4, 0xF1D4A, 0x52C94, 0xF0C96, 0xF1536, 0x42AAC, 0xF0AD4, 0xF16B2, 0x22EA4, 0xF0EA4,  // 1901-1910
+            0x6364A, 0xF164A, 0xF1496, 0x52956, 0xF055A, 0xF0AD6, 0x216D2, 0xF1B52, 0x73B24, 0xF1D24,  // 1911-1920
+            0xF1A4A, 0x5349A, 0xF14AC, 0xF056C, 0x42B6A, 0xF0DA8, 0xF1D52, 0x23D24, 0xF1D24, 0x61A4C,  // 1921-1930
+            0xF0A56, 0xF14AE, 0x5256C, 0xF16B4, 0xF0DA8, 0x31D92, 0xF0E92, 0x72D26, 0xF1526, 0xF0A56,  // 1931-1940
+            0x614B6, 0xF155A, 0xF0AD4, 0x436AA, 0xF1748, 0xF1692, 0x23526, 0xF152A, 0x72A5A, 0xF0A6C,  // 1941-1950
+            0xF155A, 0x52B54, 0xF0B64, 0xF1B4A, 0x33A94, 0xF1A94, 0x8152A, 0xF152E, 0xF0AAC, 0x6156A,  // 1951-1960
+            0xF15AA, 0xF0DA4, 0x41D4A, 0xF1D4A, 0xF0C94, 0x3192E, 0xF1536, 0x72AB4, 0xF0AD4, 0xF16D2,  // 1961-1970
+            0x52EA4, 0xF16A4, 0xF164A, 0x42C96, 0xF1496, 0x82956, 0xF055A, 0xF0ADA, 0x616D2, 0xF1B52,  // 1971-1980
+            0xF1B24, 0x43A4A, 0xF1A4A, 0xA349A, 0xF14AC, 0xF056C, 0x60B6A, 0xF0DAA, 0xF1D92, 0x53D24,  // 1981-1990
+            0xF1D24, 0xF1A4C, 0x314AC, 0xF14AE, 0x829AC, 0xF06B4, 0xF0DAA, 0x52D92, 0xF0E92, 0xF0D26,  // 1991-2000
+            0x42A56, 0xF0A56, 0xF14B6, 0x22AB4, 0xF0AD4, 0x736AA, 0xF1748, 0xF1692, 0x53526, 0xF152A,  // 2001-2010
+            0xF0A5A, 0x4155A, 0xF156A, 0x92B54, 0xF0BA4, 0xF1B4A, 0x63A94, 0xF1A94, 0xF192A, 0x42A5C,  // 2011-2020
+            0xF0AAC, 0xF156A, 0x22B64, 0xF0DA4, 0x61D52, 0xF0E4A, 0xF0C96, 0x5192E, 0xF1956, 0xF0AB4,  // 2021-2030
+            0x315AC, 0xF16D2, 0xB2EA4, 0xF16A4, 0xF164A, 0x63496, 0xF1496, 0xF0956, 0x50AB6, 0xF0B5A,  // 2031-2040
+            0xF16D4, 0x236A4, 0xF1B24, 0x73A4A, 0xF1A4A, 0xF14AA, 0x5295A, 0xF096C, 0xF0B6A, 0x31B54,  // 2041-2050
+            0xF1D92, 0x83D24, 0xF1D24, 0xF1A4C, 0x614AC, 0xF14AE, 0xF09AC, 0x40DAA, 0xF0EAA, 0xF0E92,  // 2051-2060
+            0x31D26, 0xF0D26, 0x72A56, 0xF0A56, 0xF14B6, 0x52AB4, 0xF0AD4, 0xF16CA, 0x42E94, 0xF1694,  // 2061-2070
+            0x8352A, 0xF152A, 0xF0A5A, 0x6155A, 0xF156A, 0xF0B54, 0x4174A, 0xF1B4A, 0xF1A94, 0x3392A,  // 2071-2080
+            0xF192C, 0x7329C, 0xF0AAC, 0xF156A, 0x52B64, 0xF0DA4, 0xF1D4A, 0x41C94, 0xF0C96, 0x8192E,  // 2081-2090
+            0xF0956, 0xF0AB6, 0x615AC, 0xF16D4, 0xF0EA4, 0x42E4A, 0xF164A, 0xF1516, 0x22936            // 2090-2099
+        ];
+        
+        const START_YEAR = 1901;
+        const SOLAR_START_DATE = new Date(1901, 1, 19); // 1901年正月初一的公历日期为1901/2/19
+
+        // 農曆月份名稱
+        const lunarMonths = ["", "正月", "二月", "三月", "四月", "五月", "六月", 
+                           "七月", "八月", "九月", "十月", "冬月", "臘月"];
+        
+        // 農曆日期名稱
+        const lunarDays = ["", "初一", "初二", "初三", "初四", "初五", "初六", "初七", "初八", "初九", "初十",
+                         "十一", "十二", "十三", "十四", "十五", "十六", "十七", "十八", "十九", "二十",
+                         "廿一", "廿二", "廿三", "廿四", "廿五", "廿六", "廿七", "廿八", "廿九", "三十"];
+
+        // 農曆換算核心函數
+        function getLeapMonth(lunarYear) {
+            return (lunarData[lunarYear - START_YEAR] >> 16) & 0x0F;
+        }
+
+        function lunarMonthDays(lunarYear, lunarMonth) {
+            return 29 + ((lunarData[lunarYear - START_YEAR] >> lunarMonth) & 0x01);
+        }
+
+        function lunarYearDays(year) {
+            let days = 0;
+            const monthsDay = lunarData[year - START_YEAR];
+            const leapMonth = getLeapMonth(year);
+            const monthCount = (leapMonth === 0x0F) ? 12 : 13;
+            
+            for (let i = 1; i <= monthCount; i++) {
+                const day = 29 + ((monthsDay >> i) & 0x01);
+                days += day;
+            }
+            return days;
+        }
+
+        function dateDiff(tm) {
+            return Math.floor((tm - SOLAR_START_DATE) / (1000 * 60 * 60 * 24));
+        }
+
+        function getLunarDate(tm) {
+            if (tm < SOLAR_START_DATE || tm > new Date(2100, 1, 18)) {
+                throw new Error('日期超出範圍 (1901-2099)');
+            }
+            
+            let spanDays = dateDiff(tm);
+            let year = START_YEAR;
+            let month = 1;
+            let day = 1;
+            
+            let tmp = lunarYearDays(year);
+            while (spanDays >= tmp) {
+                spanDays -= tmp;
+                year += 1;
+                tmp = lunarYearDays(year);
+            }
+            
+            let leap = false;
+            tmp = lunarMonthDays(year, month);
+            while (spanDays >= tmp) {
+                spanDays -= tmp;
+                month += 1;
+                tmp = lunarMonthDays(year, month);
+            }
+            
+            const leapMonth = getLeapMonth(year);
+            if (month > leapMonth) {
+                month -= 1;
+                if (month === leapMonth) {
+                    leap = true;
+                }
+            }
+            
+            day += spanDays;
+            return { year, month, day, leap };
+        }
+
+        function getLunarDateString(date) {
+            try {
+                const lunar = getLunarDate(date);
+                const lunarMonthName = lunarMonths[lunar.month];
+                const lunarDayName = lunarDays[lunar.day];
+                const leapText = lunar.leap ? "閏" : "";
+                const rocYear = lunar.year - 1911;
+                
+                return `${rocYear}年 ${leapText}${lunarMonthName}${lunarDayName}`;
+            } catch (e) {
+                return `錯誤: ${e.message}`;
+            }
+        }
+
+        function setToday() {
+            const today = new Date();
+            document.getElementById('year').value = today.getFullYear();
+            document.getElementById('month').value = today.getMonth() + 1;
+            document.getElementById('day').value = today.getDate();
+            calculate();
+        }
+
+        function validateDate(year, month, day) {
+            if (year < 1901 || year > 2099) {
+                alert('年份必須在1901到2099年之間');
+                return false;
+            }
+            if (month < 1 || month > 12) {
+                alert('月份必須在1到12之間');
+                return false;
+            }
+            const daysInMonth = new Date(year, month, 0).getDate();
+            if (day < 1 || day > daysInMonth) {
+                alert(`${year}年${month}月只有${daysInMonth}天`);
+                return false;
+            }
+            return true;
+        }
+
+        function getWeekday(date) {
+            const weekdays = ["星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"];
+            return weekdays[date.getDay()];
+        }
+
+        function calculateHundredDays(inputDate) {
+            const results = [];
+            results.push(`輸入日期：${inputDate.getFullYear()}年${String(inputDate.getMonth() + 1).padStart(2, '0')}月${String(inputDate.getDate()).padStart(2, '0')}日 (為第1天)`);
+            results.push('='.repeat(30));
+            results.push('');
+            
+            // 計算未來的百日
+            for (const days of [100, 200, 300, 500]) {
+                const futureDate = new Date(inputDate);
+                futureDate.setDate(futureDate.getDate() + days - 1);
+                results.push(`${days}日後： ${futureDate.getFullYear()}年${String(futureDate.getMonth() + 1).padStart(2, '0')}月${String(futureDate.getDate()).padStart(2, '0')}日 (${getWeekday(futureDate)})`);
+            }
+            
+            // 計算過去的百日
+            for (const days of [100, 200, 300, 500]) {
+                const pastDate = new Date(inputDate);
+                pastDate.setDate(pastDate.getDate() - days + 1);
+                results.push(`${days}日前： ${pastDate.getFullYear()}年${String(pastDate.getMonth() + 1).padStart(2, '0')}月${String(pastDate.getDate()).padStart(2, '0')}日 (${getWeekday(pastDate)})`);
+            }
+            
+            return results.join('\n');
+        }
+
+        function calculateAnniversary(inputDate) {
+            const results = [];
+            results.push(`歿於(國曆)： ${inputDate.getFullYear()}年${String(inputDate.getMonth() + 1).padStart(2, '0')}月${String(inputDate.getDate()).padStart(2, '0')}日 (${getWeekday(inputDate)})`);
+            
+            // 添加農曆日期
+            const lunarDateStr = getLunarDateString(inputDate);
+            results.push(`歿於(農曆)： ${lunarDateStr}`);
+            results.push('='.repeat(30));
+            results.push('');
+            results.push('對年定義：往生者過十二個農曆月、日為同日');
+            results.push('若經過農曆閏月提早一個月、(亡者不過閏月)');
+            results.push('範例：農110/04/15往生=>對年農111/04/15');
+            results.push('範例：農116/04/15往生=>對年農117/03/15');
+            results.push('範例：農117/閏5/15往生=>對年農118/05/15');
+            results.push('📅  =民國117年閏五月、民國120年閏三月=  📅');
+            results.push('📅  =民國122年閏冬月、民國125年閏六月=  📅');
+            results.push('📅  =民國128年閏五月、民國131年閏二月=  📅');
+            results.push('📅  =民國133年閏七月、民國136年閏五月=  📅');
+            
+            return results.join('\n');
+        }
+
+        function calculateSevenCeremonies(inputDate) {
+            const results = [];
+            results.push(`往生日期： ${inputDate.getFullYear()}年${String(inputDate.getMonth() + 1).padStart(2, '0')}月${String(inputDate.getDate()).padStart(2, '0')}日 (${getWeekday(inputDate)})`);
+            
+            // 添加農曆日期
+            const lunarDateStr = getLunarDateString(inputDate);
+            results.push(`農曆日期： ${lunarDateStr}`);
+            results.push('='.repeat(30));
+            results.push('');
+            results.push('七七日期： (輸入之往生日期為第1天)');
+            
+            const sevenDays = [
+                ["頭七", 6], ["二七", 13], ["三七", 20], ["四七", 27],
+                ["五七", 34], ["六七", 41], ["滿七", 48]
+            ];
+            
+            for (const [name, days] of sevenDays) {
+                const targetDate = new Date(inputDate);
+                targetDate.setDate(targetDate.getDate() + days);
+                results.push(`${name} (輸入日期+${days}天): ${targetDate.getFullYear()}年${String(targetDate.getMonth() + 1).padStart(2, '0')}月${String(targetDate.getDate()).padStart(2, '0')}日 (${getWeekday(targetDate)})`);
+            }
+            
+            // 計算百日
+            const hundredDay = new Date(inputDate);
+            hundredDay.setDate(hundredDay.getDate() + 99);
+            results.push(`百日 (輸入日期+99天): ${hundredDay.getFullYear()}年${String(hundredDay.getMonth() + 1).padStart(2, '0')}月${String(hundredDay.getDate()).padStart(2, '0')}日 (${getWeekday(hundredDay)})`);
+            
+            return results.join('\n');
+        }
+
+        function calculateLunarConversion(inputDate) {
+            const results = [];
+            results.push('🌙 農曆換算結果');
+            results.push('='.repeat(30));
+            results.push('');
+            
+            // 國曆日期
+            results.push(`西元日期： ${inputDate.getFullYear()}年${String(inputDate.getMonth() + 1).padStart(2, '0')}月${String(inputDate.getDate()).padStart(2, '0')}日 (${getWeekday(inputDate)})`);
+            
+            // 農曆日期
+            const lunarDateStr = getLunarDateString(inputDate);
+            results.push(`農曆日期： ${lunarDateStr}`);
+            
+            // 詳細農曆資訊
+            try {
+                const lunar = getLunarDate(inputDate);
+                const lunarMonthName = lunarMonths[lunar.month];
+                const lunarDayName = lunarDays[lunar.day];
+                const leapText = lunar.leap ? "閏" : "";
+                const rocYear = lunar.year - 1911;
+                results.push(`農曆月份： ${leapText}${lunarMonthName}`);
+                results.push(`農曆日期： ${lunarDayName}`);
+                
+                // 生肖
+                const zodiac = ['鼠', '牛', '虎', '兔', '龍', '蛇', '馬', '羊', '猴', '雞', '狗', '豬'];
+                const zodiacIndex = (lunar.year - 4) % 12;
+                results.push(`生肖紀年： 肖${zodiac[zodiacIndex]}`);
+                
+                // 天干地支
+                const heavenlyStems = ['甲', '乙', '丙', '丁', '戊', '己', '庚', '辛', '壬', '癸'];
+                const earthlyBranches = ['子', '丑', '寅', '卯', '辰', '巳', '午', '未', '申', '酉', '戌', '亥'];
+                const stemIndex = (lunar.year - 4) % 10;
+                const branchIndex = (lunar.year - 4) % 12;
+                results.push(`干支紀年： ${heavenlyStems[stemIndex]}${earthlyBranches[branchIndex]}年`);
+                results.push('十二地支生肖對應：')
+                results.push('子-丑-寅-卯-辰-巳-午-未-申-酉-戍-亥');
+                results.push('鼠-牛-虎-兔-龍-蛇-馬-羊-猴-雞-狗-豬');
+            } catch (e) {
+                results.push(`錯誤：${e.message}`);
+            }
+            
+            return results.join('\n');
+        }
+
+        function calculate() {
+            const year = parseInt(document.getElementById('year').value);
+            const month = parseInt(document.getElementById('month').value);
+            const day = parseInt(document.getElementById('day').value);
+            
+            if (!validateDate(year, month, day)) {
+                return;
+            }
+            
+            const inputDate = new Date(year, month - 1, day);
+            
+            // 計算結果
+            const lunarConversionResult = calculateLunarConversion(inputDate);
+            const hundredDaysResult = calculateHundredDays(inputDate);
+            const anniversaryResult = calculateAnniversary(inputDate);
+            const sevenCeremoniesResult = calculateSevenCeremonies(inputDate);
+            
+            // 更新顯示
+            document.getElementById('lunar-conversion').textContent = lunarConversionResult;
+            document.getElementById('hundred-days').textContent = hundredDaysResult;
+            document.getElementById('anniversary').textContent = anniversaryResult;
+            document.getElementById('seven-ceremonies').textContent = sevenCeremoniesResult;
+        }
+
+        // 頁面載入時設置今天日期
+        window.onload = function() {
+            setToday();
+            
+            // 添加輸入框事件監聽
+            document.getElementById('year').addEventListener('input', function() {
+                if (this.value.length === 4) {
+                    document.getElementById('month').focus();
+                }
+            });
+            
+            document.getElementById('month').addEventListener('input', function() {
+                if (this.value.length === 2) {
+                    document.getElementById('day').focus();
+                }
+            });
+            
+            document.getElementById('day').addEventListener('input', function() {
+                if (this.value.length === 2) {
+                    calculate();
+                }
+            });
+            
+            // 防止頁面縮放
+            document.addEventListener('gesturestart', function (e) {
+                e.preventDefault();
+            });
+            
+            document.addEventListener('gesturechange', function (e) {
+                e.preventDefault();
+            });
+            
+            document.addEventListener('gestureend', function (e) {
+                e.preventDefault();
+            });
+        };
+        
+        // 添加觸摸反饋
+        function addTouchFeedback(element) {
+            element.addEventListener('touchstart', function() {
+                this.style.transform = 'scale(0.95)';
+            });
+            
+            element.addEventListener('touchend', function() {
+                this.style.transform = 'scale(1)';
+            });
+        }
+        
+        // 為按鈕添加觸摸反饋
+        document.addEventListener('DOMContentLoaded', function() {
+            const buttons = document.querySelectorAll('.btn');
+            buttons.forEach(addTouchFeedback);
+        });
+    </script>
+</body>
+</html>
